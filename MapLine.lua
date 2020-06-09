@@ -70,6 +70,12 @@ LineFrame:SetScript('OnUpdate', function(self, elapsed)
 		-- if not onMap and continentID == 9 then return end -- don't draw line to other argus maps
 		local bestMap = C_Map.GetBestMapForUnit("player");
 		local playerMapPos = C_Map.GetPlayerMapPosition(bestMap,"player")
+			
+			
+		if (playerMapPos == nil) then
+			return
+		end
+			
 		local pMapID,loc = C_Map.GetWorldPosFromMapPos(bestMap,{x=playerMapPos.x,y=playerMapPos.y})
 		--blizz, wtf.
 		local px = loc.y;
