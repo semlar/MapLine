@@ -55,7 +55,9 @@ Line:SetEndPoint('CENTER', EndPoint, 0, 0)
 local WorldMapUpdated, PlayerFacing = false, 0
 LineFrame:SetScript('OnUpdate', function(self, elapsed)
 	local angle = GetPlayerFacing()
-	if WorldMapUpdated or GetUnitSpeed('player') > 0 or angle ~= PlayerFacing then
+	if not angle and Line:IsShown() then
+		Line:Hide()
+	elseif WorldMapUpdated or GetUnitSpeed('player') > 0 or angle ~= PlayerFacing then
 		WorldMapUpdated = false
 		PlayerFacing = angle
 		Line:Hide()
