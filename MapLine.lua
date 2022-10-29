@@ -47,7 +47,16 @@ local EndPoint = CreateFrame('frame', nil, LineFrame) EndPoint:SetSize(1, 1)
 local Line = LineFrame:CreateLine(nil, 'OVERLAY')
 Line:Hide()
 Line:SetTexture('interface/buttons/white8x8')
-Line:SetGradientAlpha('HORIZONTAL', 0, 0, 0, 0.5, 1, 0, 0, 0.8)
+if Line.SetGradientAlpha then
+	-- Pre-10.0 method
+	Line:SetGradientAlpha('HORIZONTAL', 0, 0, 0, 0.5, 1, 0, 0, 0.8)
+elseif CreateColor then
+	-- Post-10.0 method
+	Line:SetGradient('HORIZONTAL', CreateColor(0, 0, 0, 0.5), CreateColor(1, 0, 0, 0.8))
+else
+	-- Fallback to just setting a solid color
+	Line:SetVertexColor(0.5, 0, 0, 0.8)
+end
 Line:SetThickness(2)
 Line:SetStartPoint('CENTER', StartPoint, 0, 0)
 Line:SetEndPoint('CENTER', EndPoint, 0, 0)
