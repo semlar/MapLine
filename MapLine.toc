@@ -1,6 +1,6 @@
-## Interface: 90207
+## Interface: 100000
 ## Title: MapLine
 ## Notes: Draws a line extending from the player arrow on the world map
 ## Author: Semlar
-## Version: 9.2.7.0
+## Version: 10.0.0.0
 MapLine.lua
