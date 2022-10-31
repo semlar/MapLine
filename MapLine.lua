@@ -79,7 +79,18 @@ LineFrame:SetScript('OnUpdate', function(self, elapsed)
 		local mx, my = 0, 0
 		
 		-- if not onMap and continentID == 9 then return end -- don't draw line to other argus maps
-		local py, px, _, pMapID = UnitPosition('player')
+		local bestMap = C_Map.GetBestMapForUnit("player");
+		local playerMapPos = C_Map.GetPlayerMapPosition(bestMap,"player")
+			
+			
+		if (playerMapPos == nil) then
+			return
+		end
+			
+		local pMapID,loc = C_Map.GetWorldPosFromMapPos(bestMap,{x=playerMapPos.x,y=playerMapPos.y})
+		--blizz, wtf.
+		local px = loc.y;
+		local py = loc.x;
 		if not px then return end -- we somehow do not have coordinates
 		--local left, top, right, bottom, width, height, mapMapID = GetMapSize()
 		local left, top, right, bottom, width, height, mapMapID = GetMapSize()
