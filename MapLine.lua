@@ -19,15 +19,17 @@ local function GetMapSize() -- Return dimensions and offset of current map
 end
 
 local function GetIntersect(px, py, a, sx, sy, ex, ey)
-	a = (a + PI / 2) % (PI * 2)
-	local dx, dy = -math.cos(a), math.sin(a)
-	local d = dx * (sy - ey) + dy * (ex - sx)
-	if d ~= 0 and dx ~= 0 then
-		local s = (dx * (sy - py) - dy * (sx - px)) / d
-		if s >= 0 and s <= 1 then
-			local r = (sx + (ex - sx) * s - px) / dx
-			if r >= 0 then
-				return sx + (ex - sx) * s, sy + (ey - sy) * s, r, s
+	if a then 
+		a = (a + PI / 2) % (PI * 2)
+		local dx, dy = -math.cos(a), math.sin(a)
+		local d = dx * (sy - ey) + dy * (ex - sx)
+		if d ~= 0 and dx ~= 0 then
+			local s = (dx * (sy - py) - dy * (sx - px)) / d
+			if s >= 0 and s <= 1 then
+				local r = (sx + (ex - sx) * s - px) / dx
+				if r >= 0 then
+					return sx + (ex - sx) * s, sy + (ey - sy) * s, r, s
+				end
 			end
 		end
 	end
