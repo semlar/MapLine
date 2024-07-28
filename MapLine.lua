@@ -66,9 +66,15 @@ Line:SetEndPoint('CENTER', EndPoint, 0, 0)
 local WorldMapUpdated, PlayerFacing = false, 0
 LineFrame:SetScript('OnUpdate', function(self, elapsed)
 	local angle = GetPlayerFacing()
+
+	-- Skyriding (Dragnriding) uses a different method of determiniing movement speed
+	-- Check if you're skyriding and if not, use the normal method
+	local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
+	local speed = isGliding and forwardSpeed or GetUnitSpeed("player")
+
 	if not angle and Line:IsShown() then
 		Line:Hide()
-	elseif WorldMapUpdated or GetUnitSpeed('player') > 0 or angle ~= PlayerFacing then
+	elseif WorldMapUpdated or speed > 0 or angle ~= PlayerFacing then
 		WorldMapUpdated = false
 		PlayerFacing = angle
 		Line:Hide()
