@@ -63,18 +63,29 @@ Line:SetThickness(2)
 Line:SetStartPoint('CENTER', StartPoint, 0, 0)
 Line:SetEndPoint('CENTER', EndPoint, 0, 0)
 
+-- Only update if player has moved since last tick
+local IsMoving = false
+f:SetScript("OnEvent", function(self, event, ...)
+	if event == "PLAYER_STARTED_MOVING" then
+		IsMoving = true
+	elseif event == "PLAYER_STOPPED_MOVING" then
+		IsMoving = false
+	end
+end)
+f:RegisterEvent("PLAYER_STARTED_MOVING")
+f:RegisterEvent("PLAYER_STOPPED_MOVING")
+
 local WorldMapUpdated, PlayerFacing = false, 0
 LineFrame:SetScript('OnUpdate', function(self, elapsed)
 	local angle = GetPlayerFacing()
 
 	-- Skyriding (Dragnriding) uses a different method of determiniing movement speed
 	-- Check if you're skyriding and if not, use the normal method
-	local isGliding, canGlide, forwardSpeed = C_PlayerInfo.GetGlidingInfo()
-	local speed = isGliding and forwardSpeed or GetUnitSpeed("player")
+	local isGliding = C_PlayerInfo.GetGlidingInfo()
 
 	if not angle and Line:IsShown() then
 		Line:Hide()
-	elseif WorldMapUpdated or speed > 0 or angle ~= PlayerFacing then
+	elseif WorldMapUpdated or IsMoving or angle ~= PlayerFacing or isGliding then
 		WorldMapUpdated = false
 		PlayerFacing = angle
 		Line:Hide()
